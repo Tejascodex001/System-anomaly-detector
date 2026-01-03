@@ -1,0 +1,17 @@
+# Build artifacts
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Binaries
+*.out
+
+# Editor / tooling
+.cache/
+.vscode/
+.idea/
+
+# Optional: clangd
+compile_commands.json

@@ -5,42 +5,18 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <chrono>
 #include <thread>
+
+#include "proc_reader.hpp"
+
 
 using namespace std::chrono_literals;
 using namespace std;
 
-struct cpusnap {
-    string cpu_name;
-    uint64_t user_time;
-    uint64_t nice_time;
-    uint64_t system_kernel_time;
-    uint64_t idle_time;
-    uint64_t iowait_time;
-    uint64_t irq_time;
-    uint64_t softirq_time;
-};
 
-cpusnap read_cpu(){
-    cpusnap cpuatt;
-    string folderpath = "/proc/stat";
-    ifstream inputFile(folderpath);
-    if(!inputFile.is_open()) { cout << "error not open" << endl; exit(0);}
-    else {
-        string line;
-        getline(inputFile,line);
-
-        istringstream(line) >> cpuatt.cpu_name >> cpuatt.user_time >> 
-        cpuatt.nice_time >> cpuatt.system_kernel_time >> cpuatt.idle_time >> cpuatt.iowait_time >> 
-        cpuatt.irq_time >> cpuatt.softirq_time;
-
-        inputFile.close();
-    }
-    return cpuatt;
-}
 
 int main (){  
+    cout << "main started" << endl;
     cpusnap cpuatt, cpuatt1;
     uint64_t total_delta, idle_delta, user_delta, nice_delta, system_delta, iowait_delta, irq_delta, softirq_delta;
     double cpu_usage;
@@ -68,6 +44,5 @@ int main (){
 
     total_delta = user_delta + nice_delta + system_delta + idle_delta + iowait_delta + irq_delta + softirq_delta;
     cpu_usage = double(total_delta - idle_delta)/double(total_delta);
-    cout << "\n" << cpu_usage*100 << "%" << endl;
-        
+    cout << "\n" << cpu_usage*100 << "%" << endl;        
 }
