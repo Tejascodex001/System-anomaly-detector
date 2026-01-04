@@ -7,7 +7,7 @@ using namespace std;
 
 int main (){  
     while (true){
-    double cpu_usage = sample_cpu_usage(); 
-    cout << "cpu usage: " << cpu_usage*100 << "%" << endl;
+    sample usage = sample_usage(); 
+    cout << "cpu usage: " << usage.cpu_usage*100 << "%" << " timestamp: " << usage.timeStamp << endl;
     }  
 }

@@ -1,3 +1,4 @@
+#include <cstdint>
 #include <iostream>
 #include <chrono>
 #include <thread>
@@ -8,9 +9,10 @@ using namespace std;
 #include "sampler.hpp"
 #include "proc_reader.hpp"
 
-double sample_cpu_usage(){
+sample sample_usage(){
     cpusnap cpuatt, cpuatt1;
-    double cpu_usage;
+    sample usage;
+    auto timer = chrono::system_clock::to_time_t(chrono::system_clock::now());
     uint64_t total_delta, idle_delta, user_delta, nice_delta, system_delta, iowait_delta, irq_delta, softirq_delta;
 
     cpuatt = read_cpu();
@@ -26,6 +28,7 @@ double sample_cpu_usage(){
     softirq_delta = cpuatt1.softirq_time - cpuatt.softirq_time;
 
     total_delta = user_delta + nice_delta + system_delta + idle_delta + iowait_delta + irq_delta + softirq_delta;
-    cpu_usage = double(total_delta - idle_delta)/double(total_delta);
-    return cpu_usage;
+    usage.cpu_usage = double(total_delta - idle_delta)/double(total_delta);
+    usage.timeStamp = timer;
+    return usage;
 }
