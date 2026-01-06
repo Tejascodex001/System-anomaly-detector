@@ -25,3 +25,7 @@ void Writer::write_sample(const sample &usage){
 void Writer::close(){
     if (file_.is_open()) file_.close();
 }
+
+void Writer::flush(){
+    if (file_.is_open()) file_.flush();
+}

@@ -15,6 +15,7 @@ class Writer{
     Writer(const std::string &Filename);
     void write_sample(const sample &usage);
     void close();
+    void flush();
 };
 
 #endif
