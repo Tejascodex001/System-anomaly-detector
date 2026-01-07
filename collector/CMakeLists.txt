@@ -3,6 +3,7 @@ add_executable(collector
     src/proc_reader.cpp
     src/sampler.cpp
     src/writer.cpp
+    src/queue.cpp
 )
 
 target_include_directories(collector
