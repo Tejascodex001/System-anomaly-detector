@@ -3,27 +3,37 @@
 #include "queue.hpp"
 #include <functional>
 #include <thread>
+#include <csignal>
+#include <atomic>
 
 using namespace std;
+
+std::atomic<bool> stop_request(false);
+
+void handle_sigint(int){
+    stop_request.store(true);
+}
 
 void write(Samplequeue &q){
     Writer writer("sample.csv");
     while(true){
+        if(stop_request and q.empty()) break;
         sample data = q.pop();
         writer.write_sample(data);
-        writer.flush();
     }
 }
-/*  so writer.flush() was called as the csv file was not updating, now i need to implement 
-safe shutdown method, which I'll do tomorrow, I'm tired as i learnt many things
-    --Date: 7 Jan 2026.
+/*  basic sigint handling. (Phase 4.4: graceful shutdown wiring (queue + signal + thread join))
+    --Date: 9 Jan 2026.
 */
 int main (){  
+    std::signal(SIGINT, handle_sigint);
     Samplequeue samplequeue;
     thread t(write, ref(samplequeue));
 
-    while(true){
+    while(!stop_request){
         sample data = sample_usage();
         samplequeue.push(data);
     }
+    samplequeue.notifyall();
+    t.join();
 }

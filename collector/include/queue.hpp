@@ -15,6 +15,8 @@ class Samplequeue{
     public:
         void push(const sample &s);
         sample pop();
+        bool empty();
+        void notifyall();
 };
 
 #endif

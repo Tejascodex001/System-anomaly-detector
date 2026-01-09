@@ -20,3 +20,12 @@ sample Samplequeue::pop(){
     queue_.pop();
     return s;
 }
+
+bool Samplequeue::empty(){
+    unique_lock<mutex> lock(mutex_);
+    return queue_.empty();
+}
+
+void Samplequeue::notifyall(){
+    cond_.notify_all();
+}
