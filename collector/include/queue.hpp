@@ -1,6 +1,7 @@
 #ifndef SAMPLE_QUEUE_HPP
 #define SAMPLE_QUEUE_HPP
 
+#include <atomic>
 #include <queue>
 #include <mutex>
 #include <condition_variable>
@@ -14,7 +15,7 @@ class Samplequeue{
 
     public:
         void push(const sample &s);
-        sample pop();
+        sample pop(const std::atomic<bool> &stop);
         bool empty();
         void notifyall();
 };

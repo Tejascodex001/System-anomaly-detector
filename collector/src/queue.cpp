@@ -1,5 +1,6 @@
 #include "queue.hpp"
 #include "sampler.hpp"
+#include <atomic>
 #include <mutex>
 
 
@@ -13,9 +14,10 @@ void Samplequeue::push(const sample &s){
     cond_.notify_one();
 }
 
-sample Samplequeue::pop(){
+sample Samplequeue::pop(const std::atomic<bool> &stop){
     unique_lock<mutex> lock(mutex_);
-    cond_.wait(lock, [&] { return !queue_.empty(); });
+    cond_.wait(lock, [&] { return !queue_.empty() || stop.load(); });
+    if (queue_.empty()) return {};
     sample s = queue_.front();
     queue_.pop();
     return s;
