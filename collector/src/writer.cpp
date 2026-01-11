@@ -13,13 +13,13 @@ Writer::Writer(const string &Filename):header_written_(false){
     }
     file_.seekp(0, ios::end);
     if (file_.tellp() == 0){
-        file_ << "timestamp,cpu_usage\n";
+        file_ << "timestamp,cpu_usage,memory_usage\n";
         header_written_ = true;
     }
 }
 
 void Writer::write_sample(const sample &usage){
-    file_ << usage.timeStamp << "," << usage.cpu_usage*100 << "\n";
+    file_ << usage.timeStamp << "," << usage.cpu_usage*100 << "," << usage.mem_usage * 100 << "\n";
 }
 
 void Writer::close(){

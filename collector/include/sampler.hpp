@@ -7,6 +7,7 @@
 struct sample{
     std::time_t timeStamp;
     double cpu_usage;
+    double mem_usage;
 };
 
 sample sample_usage();
