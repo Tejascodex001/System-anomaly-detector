@@ -13,13 +13,15 @@ Writer::Writer(const string &Filename):header_written_(false){
     }
     file_.seekp(0, ios::end);
     if (file_.tellp() == 0){
-        file_ << "timestamp,cpu_usage,memory_usage\n";
+        file_ << "timestamp,cpu_usage,memory_usage,cpu_mean,mem_mean,cpu_std,mem_std,cpu_z,mem_z,anomaly_score\n";
         header_written_ = true;
     }
 }
 
 void Writer::write_sample(const sample &usage){
-    file_ << usage.timeStamp << "," << usage.cpu_usage*100 << "," << usage.mem_usage * 100 << "\n";
+    file_ << usage.timeStamp << "," << usage.cpu_usage << "," << usage.mem_usage << "," << usage.cpu_mean << 
+    "," << usage.mem_mean << "," << usage.cpu_std << "," << usage.mem_std << "," << usage.cpu_z << "," << usage.mem_z << 
+    "," << usage.anomaly_score << "\n";
 }
 
 void Writer::close(){

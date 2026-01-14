@@ -12,6 +12,9 @@ struct sample{
     double cpu_mean;
     double cpu_std;
     double mem_std;
+    double mem_z;
+    double cpu_z;
+    double anomaly_score;
 };
 
 sample sample_usage();

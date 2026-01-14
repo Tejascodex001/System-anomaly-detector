@@ -34,7 +34,7 @@ int main (){
     vector <sample> window;
     int max_size = 30;
     double cpu_mean = 0, mem_mean = 0, cpu_sum = 0, mem_sum = 0, cpu_var_sum = 0, mem_var_sum = 0;
-    double cpu_std = 0, mem_std = 0;
+    double cpu_std = 0, mem_std = 0, cpu_z, mem_z;
 
     std::signal(SIGINT, handle_sigint);
     Samplequeue samplequeue;
@@ -71,6 +71,13 @@ int main (){
             mem_std = sqrt(mem_var_sum/window.size());
             data.cpu_std = cpu_std;
             data.mem_std = mem_std;
+            if (cpu_std > 0) cpu_z = (data.cpu_usage - data.cpu_mean)/data.cpu_std;
+            else cpu_z = 0;
+            if (mem_std > 0) mem_z = (data.mem_usage - data.mem_mean)/data.mem_std;
+            else mem_z = 0;
+            data.cpu_z = cpu_z;
+            data.mem_z = mem_z;
+            data.anomaly_score = abs(cpu_z) + abs(mem_z);
             samplequeue.push(data);
         }
         
