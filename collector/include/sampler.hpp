@@ -1,6 +1,7 @@
 #ifndef SAMPLER_HPP
 #define SAMPLER_HPP
 
+#include<string>
 #include <cstdint>
 #include <chrono>
 
@@ -15,10 +16,15 @@ struct sample{
     double mem_z;
     double cpu_z;
     double anomaly_score;
+    enum State_type{
+        NORMAL,
+        WARNING,
+        ANOMALY
+    };
+    State_type state;
 };
 
 sample sample_usage();
-
 
 
 #endif

@@ -34,7 +34,7 @@ int main (){
     vector <sample> window;
     int max_size = 30;
     double cpu_mean = 0, mem_mean = 0, cpu_sum = 0, mem_sum = 0, cpu_var_sum = 0, mem_var_sum = 0;
-    double cpu_std = 0, mem_std = 0, cpu_z, mem_z;
+    double cpu_std = 0, mem_std = 0, cpu_z, mem_z, t1 = 2.5, t2 = 4.0; //t1 - warning threshold ; t2 - anomaly threshold
 
     std::signal(SIGINT, handle_sigint);
     Samplequeue samplequeue;
@@ -77,7 +77,10 @@ int main (){
             else mem_z = 0;
             data.cpu_z = cpu_z;
             data.mem_z = mem_z;
-            data.anomaly_score = abs(cpu_z) + abs(mem_z);
+            data.anomaly_score = std::abs(cpu_z) + std::abs(mem_z);
+            if (data.anomaly_score < t1) data.state = sample::NORMAL;
+            else if (data.anomaly_score < t2) data.state = sample::WARNING;
+            else data.state = sample::ANOMALY;
             samplequeue.push(data);
         }
         

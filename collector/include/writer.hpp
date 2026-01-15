@@ -16,6 +16,7 @@ class Writer{
     void write_sample(const sample &usage);
     void close();
     void flush();
+    const char* state_to_string(sample::State_type s);
 };
 
 #endif
